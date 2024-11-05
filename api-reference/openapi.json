@@ -1,195 +1,1423 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
-    }
-  }
+	"info": {
+		"_postman_id": "3c9441c1-83c5-4520-9a70-2069fbe4bb87",
+		"name": "EIV-C",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "926891",
+		"_collection_link": "https://swiftend.postman.co/workspace/a6d46c91-9fdf-4130-8bec-93a6d5618baf/collection/926891-3c9441c1-83c5-4520-9a70-2069fbe4bb87?action=share&source=collection_link&creator=926891"
+	},
+	"item": [
+		{
+			"name": "Setup",
+			"item": [
+				{
+					"name": "Enrollment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "ROOT_AUTHORIZATION_ACCESS_KEY",
+								"value": "{{ROOT_AUTHORIZATION_ACCESS_KEY}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reference\": \"access-point-2-receiver\",\n    \"access_role\": \"ap\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/provisioning",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provisioning"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateEnrolledProfileConfig",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "ROOT_AUTHORIZATION_ACCESS_KEY",
+								"value": "{{ROOT_AUTHORIZATION_ACCESS_KEY}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    // \"entity_id\": \"{{TEST_ENTITY_ID}}\" ,\n    \"allowed_ips\": [\n        \"127.0.0.1\", \"192.168.65.1\", \"46.11.196.149\"\n    ],\n    \"business_ids\": [\n        \"{{TEST_BUSINESS_ID}}\"\n    ],\n    \"toggle_active_status\": false,\n    \"reset_api_secret\": false,\n    \"webhook_url\": \"https://hkdk.events/hyp6fnrlmm717s\",\n    \"notification_email\": \"segsalerty_2@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/provisioning/{{TEST_APP_2_REFERENCE}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provisioning",
+								"{{TEST_APP_2_REFERENCE}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEnrollment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ROOT_AUTHORIZATION_ACCESS_KEY",
+								"value": "{{ROOT_AUTHORIZATION_ACCESS_KEY}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/provisioning/{{TEST_APP_2_REFERENCE}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provisioning",
+								"{{TEST_APP_2_REFERENCE}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SearchEnrollment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ROOT_AUTHORIZATION_ACCESS_KEY",
+								"value": "{{ROOT_AUTHORIZATION_ACCESS_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/provisioning?size=20&page=1&sort_by=access_role&sort_direction_desc=true&access_role=&reference=",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provisioning"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "20",
+									"description": "how many data per page"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "what page in the pagination? page 1, 2, 3 or X depending on the totalPages"
+								},
+								{
+									"key": "sort_by",
+									"value": "access_role",
+									"description": "sort by the query param. i.e sort by 'access_role'"
+								},
+								{
+									"key": "sort_direction_desc",
+									"value": "true",
+									"description": "sort the 'sort_by' "
+								},
+								{
+									"key": "access_role",
+									"value": "",
+									"description": "ap,aggregator,integrator,vendor,business,auditor,regulator"
+								},
+								{
+									"key": "reference",
+									"value": "",
+									"description": "searching by a reference"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EntityAndBusiness",
+			"item": [
+				{
+					"name": "CreateEntity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reference\": \"abj-02-1\",\n    \"custom_settings\": \"{{TEST_ENTITY_CUSTOM_SETTINGS}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/entity",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddBusinessToEntity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{TEST_APP_2_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{TEST_APP_2_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reference\": \"yuSufInternational-Yele\",\n    \"custom_settings\": \"{{TEST_BUSINESS_CUSTOM_SETTINGS}}\",\n    \"tin\": \"TIN-000002\",\n    \"sector\": \"Oil Well Drilling\", // optional\n    \"annual_turnover\": \"1 million - 50 million\", //optional\n    \"support_peppol\": true, //optional\n    \"is_realtime_reporting\": false, //optional\n    \"notification_channels\": \"self, email, sms\", //optional\n    \"erp_system\": \"TTT-INT\" //optional\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/entity/{{TEST_ENTITY_ID_2}}/business",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entity",
+								"{{TEST_ENTITY_ID_2}}",
+								"business"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEntity",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{TEST_APP_2_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{TEST_APP_2_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/entity/{{TEST_ENTITY_ID_2}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entity",
+								"{{TEST_ENTITY_ID_2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Switch APP",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"app_reference\": \"segun-tester-17\" // the reference of the APP.\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/entity/{{TEST_ENTITY_ID}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entity",
+								"{{TEST_ENTITY_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SearchEntity",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/entity?size=20&page=1&sort_by=created_at&sort_direction_desc=true&reference=",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entity"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "20",
+									"description": "how many data per page"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "what page in the pagination? page 1, 2, 3 or X depending on the totalPages"
+								},
+								{
+									"key": "sort_by",
+									"value": "created_at",
+									"description": "sort by the query param. i.e sort by 'created_at'"
+								},
+								{
+									"key": "sort_direction_desc",
+									"value": "true",
+									"description": "sort the 'sort_by' "
+								},
+								{
+									"key": "reference",
+									"value": "",
+									"description": "searching by a reference"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EnrollmentBusiness",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/provisioning/business/{{TEST_BUSINESS_ID}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provisioning",
+								"business",
+								"{{TEST_BUSINESS_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invoice (PUBLIC)",
+			"item": [
+				{
+					"name": "resources",
+					"item": [
+						{
+							"name": "GetCountries",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/v1/invoice/resources/countries",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"invoice",
+										"resources",
+										"countries"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetOtherResources",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/v1/invoice/resources",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"invoice",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetCurrencies",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/v1/invoice/resources/currencies",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"invoice",
+										"resources",
+										"currencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetVatExemptions",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/v1/invoice/resources/vat-exemptions",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"invoice",
+										"resources",
+										"vat-exemptions"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ValidateIRN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"invoice_reference\": \"ITW001\",\n    \"business_id\": \"{{TEST_BUSINESS_ID}}\",\n    \"irn\": \"ITW001-F3A3A0CF-20240619\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/irn/validate",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"irn",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ValidateInvoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"business_id\": \"{{TEST_BUSINESS_ID}}\",\n    \"irn\": \"ITW006-F3A3A0CF-20240703\",\n    \"issue_date\": \"2024-05-14\",\n    \"due_date\": \"2024-06-14\", //optional\n    \"issue_time\": \"17:59:04\", //optional\n    \"invoice_type_code\": \"396\",\n    \"payment_status\": \"PENDING\", //optional, defaults to pending\n    \"note\": \"dummy_note (will be encryted in storage)\", //optional\n    \"tax_point_date\": \"2024-05-14\", //optional\n    \"document_currency_code\": \"NGN\",\n    \"tax_currency_code\": \"NGN\", //optional\n    \"accounting_cost\": \"2000 NGN\", //optional\n    \"buyer_reference\": \"buyer REF IRN?\", //optional\n    \"invoice_delivery_period\": {\n        \"start_date\": \"2024-06-14\",\n        \"end_date\": \"2024-06-16\"\n    }, //optional\n    \"order_reference\": \"order REF IRN?\", //optional\n    \"billing_reference\": [\n        {\n            \"irn\": \"ITW001-E9E0C0D3-20240619\",\n            \"issue_date\":\"2024-05-14\"\n        },\n        {\n            \"irn\": \"ITW001-E9E0C0D3-20240619\",\n            \"issue_date\":\"2024-05-14\"\n        } //optional - second value to ...x in array is always optional\n    ], //optional\n    \"dispatch_document_reference\": {\n        \"irn\": \"ITW001-E9E0C0D3-20240619\",\n        \"issue_date\":\"2024-05-14\"\n    }, //optional\n    \"receipt_document_reference\": {\n        \"irn\": \"ITW001-E9E0C0D3-20240619\",\n        \"issue_date\":\"2024-05-14\"\n    }, //optional\n    \"originator_document_reference\": {\n        \"irn\": \"ITW001-E9E0C0D3-20240619\",\n        \"issue_date\":\"2024-05-14\"\n    }, // optional\n    \"contract_document_reference\": {\n        \"irn\": \"ITW001-E9E0C0D3-20240619\",\n        \"issue_date\":\"2024-05-14\"\n    }, //optional\n    \"additional_document_reference\": [\n        {\n            \"irn\": \"ITW001-E9E0C0D3-20240619\",\n            \"issue_date\":\"2024-05-14\"\n        }\n    ], //optional\n    \"accounting_supplier_party\": {\n        // \"id\": \"{{TEST_PARTY_ID}}\", //optional if party_name and postal_address is set\n        \"party_name\": \"Dangote Group\", //optional if id is set\n        \"postal_address_id\": \"{{TEST_ADDRESS_ID}}\", //optional if postal_address is set\n        \"tin\": \"TIN-0099990001\", // now mandatory\n        \"email\": \"supplier_business@email.com\", // now mandatory\n        \"telephone\": \"+23480254099000\", //optional, must start with + (meaning country code)\n        \"business_description\": \"this entity is into sales of Cement and building materials\" //optional\n        // \"postal_address\": {\n        //     \"street_name\": \"32, owonikoko street\", //optional if id is set\n        //     \"city_name\": \"Gwarikpa\", //optional if id is set\n        //     \"postal_zone\": \"023401\", //optional if id is set\n        //     \"country\": \"NG\" //optional if id is set\n        // } //optional if id is set\n    },\n    \"accounting_customer_party\": {\n        \"id\": \"{{TEST_PARTY_ID}}\", //optional if party_name and postal_address is set\n        \"party_name\": \"Dangote Group\", //optional if id is set\n        //\"postal_address_id\": \"{{TEST_ADDRESS_ID}}\", //optional if postal_address is set\n        \"tin\": \"TIN-000001\", // now mandatory\n        \"email\": \"business@email.com\", // now mandatory\n        \"telephone\": \"+23480254000000\", //optional, must start with + (meaning country code)\n        \"business_description\": \"this entity is into sales of Cement and building materials\", //optional\n        \"postal_address\": {\n            \"street_name\": \"32, owonikoko street\", //optional if id is set\n            \"city_name\": \"Gwarikpa\", //optional if id is set\n            \"postal_zone\": \"023401\", //optional if id is set\n            \"country\": \"NG\" //optional if id is set\n        } //optional if id is set\n    },\n    // \"payee_party\": {}, //optional (party object, just like accounting_customer_party)\n    // \"tax_representative_party\": {}, //optional (party object, just like accounting_customer_party)\n    \"actual_delivery_date\": \"2024-05-14\", //optional\n    \"payment_means\": [\n        {\n            \"payment_means_code\": \"10\",\n            \"payment_due_date\": \"2024-05-14\"\n        },\n        {\n            \"payment_means_code\": \"43\",\n            \"payment_due_date\": \"2024-05-14\"\n        }//optional - second value to ...x in array is always optional\n    ],//optional\n    \"payment_terms_note\": \"dummy payment terms note (will be encryted in storage)\",//optional\n    \"allowance_charge\": [\n        {\n            \"charge_indicator\": true, //indicates whether the amount is a charge (true) or an allowance (false)\n            \"amount\": 800.60\n        },\n        {\n            \"charge_indicator\": false, //indicates whether the amount is a charge (true) or an allowance (false)\n            \"amount\": 10\n        }//optional - second value to ...x in array is always optional\n    ],//optional\n    \"tax_total\": [\n        {\n            \"tax_amount\": 56.07,\n            \"tax_subtotal\": [\n                {\n                    \"taxable_amount\": 800,\n                    \"tax_amount\": 8,\n                    \"tax_category\": {\n                        \"id\": \"LOCAL_SALES_TAX\",\n                        \"percent\": 2.3\n                    }\n                }\n            ]\n        }//second value to ...x in array is always optional if you want to add it\n    ],//optional\n    \"legal_monetary_total\": {\n        \"line_extension_amount\": 340.50,\n        \"tax_exclusive_amount\": 400,\n        \"tax_inclusive_amount\": 430,\n        \"payable_amount\": 30\n    },\n    \"invoice_line\": [\n        {\n            \"hsn_code\": \"CC-001\",\n            \"product_category\": \"Food and Beverages\",\n            \"dicount_rate\": 2.01,\n            \"dicount_amount\": 3500,\n            \"fee_rate\": 1.01,\n            \"fee_amount\": 50,\n            \"invoiced_quantity\": 15,\n            \"line_extension_amount\": 30,\n            \"item\": {\n                \"name\": \"item name\",\n                \"description\": \"item description\",\n                \"sellers_item_identification\": \"identified as spoon by the seller\" //optional\n            },\n            \"price\": {\n                \"price_amount\": 10,\n                \"base_quantity\": 3,\n                \"price_unit\": \"NGN per 1\"\n            }\n        },\n        {\n            \"hsn_code\": \"VV-AX-001\",\n            \"product_category\": \"Cars and Automobiles\",\n            \"dicount_rate\": 2.01,\n            \"dicount_amount\": 3500,\n            \"fee_rate\": 1.01,\n            \"fee_amount\": 50,\n            \"invoiced_quantity\": 2,\n            \"line_extension_amount\": 100,\n            \"item\": {\n                \"name\": \"item nam 2\",\n                \"description\": \"item description 2\",\n                \"sellers_item_identification\": \"identified as shovel by the seller\"\n            },\n            \"price\": {\n                \"price_amount\": 20,\n                \"base_quantity\": 5,\n                \"price_unit\": \"NGN per 1\"\n            }\n        }//optional - second value to ...x in array is always optional\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/validate",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SignInvoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"business_id\": \"{{TEST_BUSINESS_ID}}\",\n    \"irn\": \"ITW011-38A7AB43-20241010\",\n    \"issue_date\": \"2024-05-14\",\n    \"due_date\": \"2024-06-14\", //optional\n    \"issue_time\": \"17:59:04\", //optional\n    \"invoice_type_code\": \"396\",\n    // \"payment_status\": \"PENDING\", //optional, defaults to pending\n    \"note\": \"dummy_note (will be encryted in storage)\", //optional\n    \"tax_point_date\": \"2024-05-14\", //optional\n    \"document_currency_code\": \"NGN\",\n    \"tax_currency_code\": \"NGN\", //optional\n    \"accounting_cost\": \"2000 NGN\", //optional\n    \"buyer_reference\": \"buyer REF IRN?\", //optional\n    \"invoice_delivery_period\": {\n        \"start_date\": \"2024-06-14\",\n        \"end_date\": \"2024-06-16\"\n    }, //optional\n    \"order_reference\": \"order REF IRN?\", //optional\n    \"billing_reference\": [\n        {\n            \"irn\": \"ITW001-E9E0C0D3-20240619\",\n            \"issue_date\":\"2024-05-14\"\n        },\n        {\n            \"irn\": \"ITW001-E9E0C0D3-20240619\",\n            \"issue_date\":\"2024-05-14\"\n        } //optional - second value to ...x in array is always optional\n    ], //optional\n    \"dispatch_document_reference\": {\n        \"irn\": \"ITW001-E9E0C0D3-20240619\",\n        \"issue_date\":\"2024-05-14\"\n    }, //optional\n    \"receipt_document_reference\": {\n        \"irn\": \"ITW001-E9E0C0D3-20240619\",\n        \"issue_date\":\"2024-05-14\"\n    }, //optional\n    \"originator_document_reference\": {\n        \"irn\": \"ITW001-E9E0C0D3-20240619\",\n        \"issue_date\":\"2024-05-14\"\n    }, // optional\n    \"contract_document_reference\": {\n        \"irn\": \"ITW001-E9E0C0D3-20240619\",\n        \"issue_date\":\"2024-05-14\"\n    }, //optional\n    \"additional_document_reference\": [\n        {\n            \"irn\": \"ITW001-E9E0C0D3-20240619\",\n            \"issue_date\":\"2024-05-14\"\n        }\n    ], //optional\n    \"accounting_supplier_party\": {\n        // \"id\": \"{{TEST_PARTY_ID}}\", //optional if party_name and postal_address is set\n        \"party_name\": \"Dangote Group\", //optional if id is set\n        //\"postal_address_id\": \"{{TEST_ADDRESS_ID}}\", //optional if postal_address is set\n        \"tin\": \"TIN-000001\", // now mandatory\n        \"email\": \"supplier_business@email.com\", // now mandatory\n        \"telephone\": \"+23480254099000\", //optional, must start with + (meaning country code)\n        \"business_description\": \"this entity is into sales of Cement and building materials\", //optional\n        \"postal_address\": {\n            \"street_name\": \"32, owonikoko street\", //optional if id is set\n            \"city_name\": \"Gwarikpa\", //optional if id is set\n            \"postal_zone\": \"023401\", //optional if id is set\n            \"country\": \"NG\" //optional if id is set\n        } //optional if id is set\n    },\n    \"accounting_customer_party\": {\n        \"id\": \"{{TEST_PARTY_ID}}\", //optional if party_name and postal_address is set\n        \"party_name\": \"Segsalerty R\", //optional if id is set\n        //\"postal_address_id\": \"{{TEST_ADDRESS_ID}}\", //optional if postal_address is set\n        \"tin\": \"TIN-000002\", // now mandatory\n        \"email\": \"business@email.com\", // now mandatory\n        \"telephone\": \"+23480254000000\", //optional, must start with + (meaning country code)\n        \"business_description\": \"this entity is into sales of Cement and building materials\", //optional\n        \"postal_address\": {\n            \"street_name\": \"32, owonikoko street\", //optional if id is set\n            \"city_name\": \"Gwarikpa\", //optional if id is set\n            \"postal_zone\": \"023401\", //optional if id is set\n            \"country\": \"NG\" //optional if id is set\n        } //optional if id is set\n    },\n    // \"payee_party\": {}, //optional (party object, just like accounting_customer_party)\n    // \"tax_representative_party\": {}, //optional (party object, just like accounting_customer_party)\n    \"actual_delivery_date\": \"2024-05-14\", //optional\n    \"payment_means\": [\n        {\n            \"payment_means_code\": \"10\",\n            \"payment_due_date\": \"2024-05-14\"\n        },\n        {\n            \"payment_means_code\": \"43\",\n            \"payment_due_date\": \"2024-05-14\"\n        }//optional - second value to ...x in array is always optional\n    ],//optional\n    \"payment_terms_note\": \"dummy payment terms note (will be encryted in storage)\",//optional\n    \"allowance_charge\": [\n        {\n            \"charge_indicator\": true, //indicates whether the amount is a charge (true) or an allowance (false)\n            \"amount\": 800.60\n        },\n        {\n            \"charge_indicator\": false, //indicates whether the amount is a charge (true) or an allowance (false)\n            \"amount\": 10\n        }//optional - second value to ...x in array is always optional\n    ],//optional\n    \"tax_total\": [\n        {\n            \"tax_amount\": 56.07,\n            \"tax_subtotal\": [\n                {\n                    \"taxable_amount\": 800,\n                    \"tax_amount\": 8,\n                    \"tax_category\": {\n                        \"id\": \"LOCAL_SALES_TAX\",\n                        \"percent\": 2.3\n                    }\n                }\n            ]\n        }//second value to ...x in array is always optional if you want to add it\n    ],//optional\n    \"legal_monetary_total\": {\n        \"line_extension_amount\": 340.50,\n        \"tax_exclusive_amount\": 400,\n        \"tax_inclusive_amount\": 430,\n        \"payable_amount\": 30\n    },\n    \"invoice_line\": [\n        {\n            \"hsn_code\": \"CC-001\",\n            \"product_category\": \"Food and Beverages\",\n            \"dicount_rate\": 2.01,\n            \"dicount_amount\": 3500,\n            \"fee_rate\": 1.01,\n            \"fee_amount\": 50,\n            \"invoiced_quantity\": 15,\n            \"line_extension_amount\": 30,\n            \"item\": {\n                \"name\": \"item name\",\n                \"description\": \"item description\",\n                \"sellers_item_identification\": \"identified as spoon by the seller\" //optional\n            },\n            \"price\": {\n                \"price_amount\": 10,\n                \"base_quantity\": 3,\n                \"price_unit\": \"NGN per 1\"\n            }\n        },\n        {\n            \"hsn_code\": \"VV-AX-001\",\n            \"product_category\": \"Cars and Automobiles\",\n            \"dicount_rate\": 2.01,\n            \"dicount_amount\": 3500,\n            \"fee_rate\": 1.01,\n            \"fee_amount\": 50,\n            \"invoiced_quantity\": 2,\n            \"line_extension_amount\": 100,\n            \"item\": {\n                \"name\": \"item nam 2\",\n                \"description\": \"item description 2\",\n                \"sellers_item_identification\": \"identified as shovel by the seller\"\n            },\n            \"price\": {\n                \"price_amount\": 20,\n                \"base_quantity\": 5,\n                \"price_unit\": \"NGN per 1\"\n            }\n        }//optional - second value to ...x in array is always optional\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/sign",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"sign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateParty",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"business_id\": \"{{TEST_BUSINESS_ID}}\",\n    \"party_name\": \"Dangote Group TMZ\",\n    \"postal_address_id\": \"940848d6-6c9d-44cc-851c-d1c69edcec95\", //optional if postal_address is set\n    \"tin\": \"TIN-000001\", // now mandatory\n    \"email\": \"business@email.com\", // now mandatory\n    \"telephone\": \"+23480254000000\", //optional, must start with + (meaning country code)\n    \"business_description\": \"this entity is into sales of Cement and building materials\" //optional\n    // \"postal_address\": {\n    //     \"street_name\": \"91, owonikoko street\",\n    //     \"city_name\": \"Malta\",\n    //     \"postal_zone\": \"023401\",\n    //     \"country\": \"NG\"\n    // }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/party",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"party"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SearchParty",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/party/{{TEST_BUSINESS_ID}}?size=20&page=1&sort_by=created_at&sort_direction_desc=true&party_name=",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"party",
+								"{{TEST_BUSINESS_ID}}"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sort_by",
+									"value": "created_at"
+								},
+								{
+									"key": "sort_direction_desc",
+									"value": "true"
+								},
+								{
+									"key": "party_name",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConfirmInvoice",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/confirm/{{TEST_IRN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"confirm",
+								"{{TEST_IRN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteInvoice",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/cancel/{{TEST_IRN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"cancel",
+								"{{TEST_IRN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DownloadInvoice",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{TEST_APP_2_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{TEST_APP_2_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/download/{{TEST_IRN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"download",
+								"{{TEST_IRN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SearchInvoice",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/{{TEST_BUSINESS_ID}}?size=20&page=1&sort_by=created_at&sort_direction_desc=true&irn=ITW005-F3A3A0CF-20240703&payment_status=PENDING&entry_status&invoice_type_code&issue_date&due_date&tax_currency_code&document_currency_code",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"{{TEST_BUSINESS_ID}}"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sort_by",
+									"value": "created_at"
+								},
+								{
+									"key": "sort_direction_desc",
+									"value": "true"
+								},
+								{
+									"key": "irn",
+									"value": "ITW005-F3A3A0CF-20240703"
+								},
+								{
+									"key": "payment_status",
+									"value": "PENDING"
+								},
+								{
+									"key": "entry_status",
+									"value": null
+								},
+								{
+									"key": "invoice_type_code",
+									"value": null
+								},
+								{
+									"key": "issue_date",
+									"value": null
+								},
+								{
+									"key": "due_date",
+									"value": null
+								},
+								{
+									"key": "tax_currency_code",
+									"value": null
+								},
+								{
+									"key": "document_currency_code",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateInvoice",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"payment_status\": \"PAID\",\n    \"reference\": \"payment_reference_or_note\" //optional\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/update/{{TEST_IRN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"update",
+								"{{TEST_IRN}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transmitting",
+			"item": [
+				{
+					"name": "LookupWithIRN",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/transmit/lookup/{{TEST_IRN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"transmit",
+								"lookup",
+								"{{TEST_IRN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LookupWithTIN",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/transmit/lookup/tin/{{TEST_PARTY_ID}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"transmit",
+								"lookup",
+								"tin",
+								"{{TEST_PARTY_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LookupWithPartyID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/transmit/lookup/party/{{TEST_PARTY_ID}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"transmit",
+								"lookup",
+								"party",
+								"{{TEST_PARTY_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Transmit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/transmit/{{TEST_IRN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"transmit",
+								"{{TEST_IRN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConfirmReceipt",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/transmit/{{TEST_IRN}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"transmit",
+								"{{TEST_IRN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SelfCheck-Debug-Setup",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/transmit/self-health-check",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"transmit",
+								"self-health-check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pull",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{INTEGRATOR_API_KEY}}"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{INTEGRATOR_API_SECRET}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/invoice/transmit/pull?confirmed=true&from=2023-01-11&to=2025-01-10",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoice",
+								"transmit",
+								"pull"
+							],
+							"query": [
+								{
+									"key": "confirmed",
+									"value": "true"
+								},
+								{
+									"key": "from",
+									"value": "2023-01-11"
+								},
+								{
+									"key": "to",
+									"value": "2025-01-10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HealthCheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/api",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "localhost:8000",
+			"type": "string"
+		}
+	]
 }
